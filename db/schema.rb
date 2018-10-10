@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2) do
+ActiveRecord::Schema.define(version: 20181010145822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,21 @@ ActiveRecord::Schema.define(version: 2) do
     t.index ["user_id"], name: "index_examples_on_user_id"
   end
 
+  create_table "groups", force: :cascade do |t|
+    t.string "name"
+    t.bigint "admins_id"
+    t.bigint "members_id"
+    t.integer "max_members"
+    t.string "description"
+    t.boolean "requires_invitation_to_join"
+    t.bigint "events_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admins_id"], name: "index_groups_on_admins_id"
+    t.index ["events_id"], name: "index_groups_on_events_id"
+    t.index ["members_id"], name: "index_groups_on_members_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "token", null: false
@@ -33,5 +48,4 @@ ActiveRecord::Schema.define(version: 2) do
     t.index ["token"], name: "index_users_on_token", unique: true
   end
 
-  add_foreign_key "examples", "users"
 end
